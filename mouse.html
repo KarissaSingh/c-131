@@ -1,0 +1,76 @@
+<html>
+<head>
+
+	<title>Object Detection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
+
+  <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+  
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body background="images.jpg"></body>
+  <center>
+    <h1 class="heading">Object Detection</h1>
+    
+    <a href="index.html" class="btn btn-primary"> Home button 
+    </a>
+
+    <h3 id="status" class="btn btn-danger"></h3>
+<br> <br>
+<h3 class="btn btn-success" style ="font-size: 15px;"> There are 4 big objects in the Image </h3>
+  </center>
+
+  <script>
+    img="";
+status="";
+objectDetector="";
+objects=[];
+
+function preload(){
+    img = loadImage('Mouse.jpg');
+    }
+
+function setup(){
+    canvas = createCanvas(640,420);
+    canvas.center();
+    Od=ml5.objectDetector('cocossd',modelLoaded);
+    document.getElementById("status").innerHTML="Status : Detecting Object" ;
+}
+
+function draw() {
+    image(img,0,0,640,420);
+    fill("#64adf5");
+    text("Dog",45,75);
+    noFill();
+    stroke("#64adf5");
+    rect(30,60,450,350);
+
+}
+
+function modelLoaded() {
+    console.log("Model Loaded!")
+    status = true;
+    Od.detect(img.gotResult);
+}
+
+function gotResult(error,result) {
+
+    if (error){
+        console.error(error);
+    }
+
+    else {
+        console.log(result);
+    }
+}
+
+  </script>
+
+</body>
+</html>
