@@ -28,7 +28,7 @@
 
   <script>
     img="";
-status="";
+Status="";
 objectDetector="";
 objects=[];
 
@@ -43,20 +43,30 @@ function setup(){
     document.getElementById("status").innerHTML="Status : Detecting Object" ;
 }
 
-function draw() {
-    image(img,0,0,640,420);
-    fill("#64adf5");
-    text("Dog",45,75);
-    noFill();
-    stroke("#64adf5");
-    rect(30,60,450,350);
 
+function draw() {
+
+if(Status !=undefined)
+{
+image(img,0,0,640,420);
+
+for (i = 0; i < objects.length; i++) {
+    document.getElementById("status").innerHTML="Status : Object Detected";
+
+    fill("#ffde0a");
+    percent = floor(objects[i].confidence * 100);
+    text(objects[i].label + " " + percent + "%" + objects[i].x+15,objects[i].y+15 );
+    noFill();
+    stroke("#ffde0a");
+    rect(objects[i].x,objects[i].y,objects[i].width,objects[i].height);
+}
+}
 }
 
 function modelLoaded() {
     console.log("Model Loaded!")
-    status = true;
-    Od.detect(img.gotResult);
+    Status = true;
+    Od.detect(img,gotResult);
 }
 
 function gotResult(error,result) {

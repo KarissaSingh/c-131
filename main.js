@@ -1,5 +1,6 @@
 img="";
-status="";
+Status="";
+objects = [];
 
 function preload(){
     img = loadImage('dog_cat.jpg');
@@ -14,23 +15,28 @@ function setup(){
 
 function draw() {
     image(img,0,0,640,420);
-    fill("#64adf5");
-    text("Dog",45,75);
-    noFill();
-    stroke("#64adf5");
-    rect(30,60,450,350);
 
-    fill("#ffde0a");
-    text("Cat",320,120);
-    noFill();
-    stroke("#ffde0a");
-    rect(300,70,260,350);
+    if(Status !="")
+{
+    for (i = 0; i < objects.length; i++) {
+        document.getElementById("status").innerHTML="Status : Object Detected";
+   
+        fill("#ffde0a");
+        percent = floor(objects[i].confidence * 100);
+        text(objects[i].label + " " + percent + "%" + objects[i].x,objects[i].y );
+        noFill();
+        stroke("#ffde0a");
+        rect(objects[i].x,objects[i].y,objects[i].width,objects[i].height);
+    }
+}
+//#ffde0a
+    
 }
 
 function modelLoaded() {
     console.log("Model Loaded!")
-    status = true;
-    Od.detect(img.gotResult);
+    Status = true;
+    Od.detect(img,gotResult);
 }
 
 function gotResult(error,result) {
@@ -39,7 +45,8 @@ function gotResult(error,result) {
         console.error(error);
     }
 
-    else {
+     
         console.log(result);
-    }
+        objects = result;
+    
 }
